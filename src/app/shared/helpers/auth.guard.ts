@@ -1,8 +1,10 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '@angular/router';
-import {AuthenticationService} from '../services/authentication-service/authentication.service';
+import {AuthenticationService} from '../services/authentication.service';
+import {loggedIn} from '@angular/fire/auth-guard';
+import {map, take, tap} from 'rxjs/operators';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
     private router: Router,
@@ -10,12 +12,15 @@ export class AuthGuard implements CanActivate {
   ) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const currentUser = this.authenticationService.currentUserValue;
-    if (currentUser) {
-      return true;
-    }
-
-    this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
-    return false;
+    return this.authenticationService.currentUser.pipe(
+      take(1),
+      map(user => !!user),
+      // tslint:disable-next-line:no-shadowed-variable
+      tap(loggedIn => {
+        if (!loggedIn) {
+          console.log('access denied');
+          this.router.navigate(['/']);
+        }
+      }));
   }
 }

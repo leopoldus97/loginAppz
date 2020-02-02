@@ -1,6 +1,17 @@
-<form (ngSubmit)="login()">
-  <h1>Login</h1>
-  <input type="email" class="inputField" [(ngModel)]="email">
-  <input type="password" class="inputField" [(ngModel)]="pw">
+<h1>Login</h1>
+<form (submit)="login()">
+  <div>
+    <input type="email" name="email" class="inputField" [(ngModel)]="email">
+  </div>
+  <div>
+    <input type="password" name="password" class="inputField" [(ngModel)]="pw">
+  </div>
+  <div>
+    <h5><a routerLink="/forgot-password">Forgotten password?</a></h5>
+  </div>
+  <div>
+    <h5><a routerLink="/create-user">Don't have an account?</a></h5>
+  </div>
   <button type="submit">Login</button>
 </form>
+<button (click)="auth.googleSignIn()">Sign In With Google</button>
