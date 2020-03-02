@@ -14,6 +14,7 @@ import {AngularFireAuthModule} from '@angular/fire/auth';
 import {CoreModule} from './shared/helpers/core/core.module';
 import { NewAccountComponent } from './new-account/new-account.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { AdminPageComponent } from './admin/admin-page/admin-page.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
     LoginPageComponent,
     AccountPageComponent,
     NewAccountComponent,
-    ForgotPasswordComponent
+    ForgotPasswordComponent,
+    AdminPageComponent
   ],
   imports: [
     BrowserModule,

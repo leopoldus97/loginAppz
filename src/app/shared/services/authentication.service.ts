@@ -7,8 +7,7 @@ import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestor
 import {User} from '../models/user';
 import {switchMap} from 'rxjs/operators';
 import {Observable, of} from 'rxjs';
-
-// commint
+import {log} from 'util';
 
 @Injectable({
   providedIn: 'root'
@@ -51,6 +50,15 @@ export class AuthenticationService {
   async signOut() {
     await this.afAuth.auth.signOut();
     return this.router.navigate(['/']);
+  }
+
+  update(user: User) {
+    const userRef = this.afs.doc('users/' + user.uid);
+    userRef.set(user);
+  }
+
+  changePassword(pw: string) {
+    this.afAuth.auth.currentUser.updatePassword(pw).catch(err => log(err));
   }
 
   private updateUserData({ uid, email, firstName, lastName, displayName, role }: User) {

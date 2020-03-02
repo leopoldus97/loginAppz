@@ -8,9 +8,20 @@ import {AuthenticationService} from '../shared/services/authentication.service';
   styleUrls: ['./account-page.component.scss']
 })
 export class AccountPageComponent implements OnInit {
-  constructor(public auth: AuthenticationService) { }
+  password: string;
+  constructor(public auth: AuthenticationService) {
+    this.password = '';
+  }
 
   ngOnInit() {
+  }
+
+  update(user: User) {
+    this.auth.update(user);
+  }
+
+  changePassword() {
+      this.auth.changePassword(this.password);
   }
 
 }

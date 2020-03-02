@@ -5,6 +5,7 @@ import {AuthGuard} from './shared/helpers/auth.guard';
 import {LoginPageComponent} from './login-page/login-page.component';
 import {NewAccountComponent} from './new-account/new-account.component';
 import {ForgotPasswordComponent} from './forgot-password/forgot-password.component';
+import {AdminPageComponent} from './admin/admin-page/admin-page.component';
 
 
 const routes: Routes = [
@@ -12,7 +13,8 @@ const routes: Routes = [
   { path: 'login', component: LoginPageComponent },
   { path: 'account', component: AccountPageComponent},
   { path: 'create-user', component: NewAccountComponent },
-  { path: 'forgot-password', component: ForgotPasswordComponent }
+  { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'admin', component: AdminPageComponent }
 ];
 
 @NgModule({
