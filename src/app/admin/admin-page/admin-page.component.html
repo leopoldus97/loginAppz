@@ -1,10 +1,10 @@
+<h1>Admin</h1>
 <ol>
   <li *ngFor="let user of userList">{{user.email}}
-    <fieldset id="group">
-      <label for="user">User</label>
-      <input type="radio" id="user" name="{{user.uid}}">
-      <label for="admin">Admin</label>
-      <input type="radio" id="admin" name="{{user.uid}}">
-    </fieldset>
+    <input type="checkbox" (click)="changeRole(user, 'admin')">
+    <button *ngIf="!user.blocked" (click)="blockUser(user, true)">Block</button>
+    <button *ngIf="user.blocked" (click)="blockUser(user, false)">Enable</button>
+    <button (click)="deleteUser(user)">Delete</button>
   </li>
+  <button (click)="goBack()">Back</button>
 </ol>

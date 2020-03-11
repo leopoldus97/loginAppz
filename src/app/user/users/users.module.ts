@@ -2,9 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { UsersRoutingModule } from './users-routing.module';
-import {CoreModule} from '../../shared/helpers/core/core.module';
 import {AccountPageComponent} from '../account-page/account-page.component';
 import {FormsModule} from '@angular/forms';
+import {FirebaseModule} from '../../shared/helpers/firebase/firebase.module';
 
 
 @NgModule({
@@ -14,7 +14,7 @@ import {FormsModule} from '@angular/forms';
   imports: [
     CommonModule,
     UsersRoutingModule,
-    CoreModule,
+    FirebaseModule,
     FormsModule
   ]
 })

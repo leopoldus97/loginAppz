@@ -1,14 +1,21 @@
 <div *ngIf="auth.currentUser | async as user; else login">
   <pre>{{user | json}}</pre>
+  <button *ngIf="user.role === 'admin'" (click)="goToAdminPage()">Admin stuff</button>
   <h1><img *ngIf="user.role === 'admin'" src="../../../assets/pics/angular-512.png" height="30" width="30"/>{{user.displayName}}</h1>
-  <h1>{{user.uid}}</h1>
+  <form>
     <label for="email">E-mail</label>
     <input type="text" id="email" placeholder="e-mail" [(ngModel)]="user.email" name="email">
     <label for="firstname">First Name</label>
     <input type="text" id="firstname" placeholder="First Name" [(ngModel)]="user.firstName" name="firstname">
     <label for="lastname">Last Name</label>
     <input type="text" id="lastname" placeholder="Last Name" [(ngModel)]="user.lastName" name="lastname">
-    <button (click)="updateUser()">Save</button>
+    <button (click)="update(user)">Save</button>
+  </form>
+  <form>
+    <label for="password">Password</label>
+    <input type="password" id="password" placeholder="Password" [(ngModel)]="password" name="password">
+    <button (click)="changePassword()">Change password</button>
+  </form>
   <button (click)="auth.signOut()">Sign Out</button>
 </div>
 <ng-template #login><a routerLink="/login">Back to the login page.</a><button routerLink="/login">Like</button></ng-template>

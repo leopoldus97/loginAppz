@@ -27,10 +27,21 @@ export class AdminService {
   }
 
   getUsers(): Observable<User[]> {
-    return this.afs.collection<User>('users', ref => ref.where("role","==","user")).valueChanges().pipe(first());
+    // tslint:disable-next-line:max-line-length
+    return this.afs.collection<User>('users', ref => ref.where('role', '==', 'user')).valueChanges().pipe(first());
   }
-  changeRole(user: User) {
-    const userRef = this.afs.doc('users' + user.uid);
-    userRef.set(user);
+  changeRole(user: User, role: string) {
+    user.role = role;
+    const userRef = this.afs.doc('users/' + user.uid);
+    return userRef.update(user);
+  }
+  deleteUser(user: User) {
+    const userRef = this.afs.doc('users/' + user.uid);
+    return userRef.delete();
+  }
+  blockUser(user: User, block: boolean) {
+    user.blocked = block;
+    const userRef = this.afs.doc('users/' + user.uid);
+    return userRef.update(user);
   }
 }

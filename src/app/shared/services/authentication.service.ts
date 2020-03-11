@@ -61,7 +61,7 @@ export class AuthenticationService {
 
   update(user: User) {
     const userRef = this.afs.doc('users/' + user.uid);
-    userRef.set(user);
+    return userRef.set(user);
   }
 
   changePassword(pw: string) {
@@ -81,21 +81,6 @@ export class AuthenticationService {
     };
 
     return userRef.set(data, { merge: true });
-  }
-
-  public updateUser({ uid, email, firstName, lastName, displayName, role }: User) {
-    const userRef: AngularFirestoreDocument<User> = this.afs.collection<User>('users').doc(uid);
-    const data: User = {
-      uid,
-      email,
-      firstName,
-      lastName,
-      displayName,
-      role
-    };
-    log(uid + ' ' + email);
-
-    return userRef.update(data);
   }
 
   public createUser(user: User, pw: string) {

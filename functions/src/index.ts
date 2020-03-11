@@ -4,7 +4,8 @@ import {User} from '../../src/app/shared/models/user';
 
 admin.initializeApp();
 
-exports.myFunction = functions.firestore
+/*
+exports.setCreationDate = functions.firestore
   .document('users/{userID}')
   .onCreate((snap, context) => {
     const db = admin.firestore();
@@ -12,14 +13,27 @@ exports.myFunction = functions.firestore
       date: new Date().toLocaleString('dk-DK')
     });
   });
+ */
 
-exports.deleteUser = functions.auth
+exports.deleteUserFromAuth = functions.auth
   .user()
   .onDelete((userData, context) => {
     const db = admin.firestore();
     const uid = userData.uid;
     return db.doc('users/' + uid).delete();
-});
+  });
+
+exports.deleteUserFromFirestoreUsers = functions.firestore
+  .document('users/{userID}')
+  .onDelete((snap, context) => {
+    return admin.auth().deleteUser(context.params.userID);
+  });
+
+exports.deleteUserFromFirestoreBlocked = functions.firestore
+  .document('blocked/{userID}')
+  .onDelete((snap, context) => {
+    return admin.auth().deleteUser(context.params.userID);
+  });
 
 exports.blockUser = functions.firestore
   .document('users/{userID}')
@@ -28,9 +42,9 @@ exports.blockUser = functions.firestore
     const userID = context.params.userID;
     const db = admin.firestore();
     if (userValue.blocked === true) {
-      return admin.auth().updateUser(userID, {disabled: true}).then(() => {
-        return db.doc('blocked/' + userID).create(userValue).then(() => {
-          return db.doc('users/' + userID).delete();
+      return db.doc('blocked/' + userID).create(userValue).then(() => {
+        return db.doc('users/' + userID).delete().then(() => {
+          return admin.auth().updateUser(userID, {disabled: true});
         });
       });
     } else {
@@ -45,19 +59,12 @@ exports.enableUser = functions.firestore
     const userID = context.params.userID;
     const db = admin.firestore();
     if (userValue.blocked === false) {
-      return admin.auth().updateUser(userID, {disabled: false}).then(() => {
-        return db.doc('users/' + userID).create(userValue).then(() => {
-          return db.doc('blocked/' + userID).delete();
+      return db.doc('users/' + userID).create(userValue).then(() => {
+        return db.doc('blocked/' + userID).delete().then(() => {
+          return admin.auth().updateUser(userID, {disabled: false});
         });
-      }).catch(error => console.log('error', error));
+      });
     } else {
       return;
     }
   });
-
-// // Start writing Firebase Functions
-// // https://firebase.google.com/docs/functions/typescript
-//
-// export const helloWorld = functions.https.onRequest((request, response) => {
-//  response.send("Hello from Firebase!");
-// });
