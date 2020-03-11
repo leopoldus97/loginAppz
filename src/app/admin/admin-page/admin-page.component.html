@@ -1,3 +1,10 @@
 <ol>
-  <li *ngFor="let user of userList">{{user.email}}</li>
+  <li *ngFor="let user of userList">{{user.email}}
+    <fieldset id="group">
+      <label for="user">User</label>
+      <input type="radio" id="user" name="{{user.uid}}">
+      <label for="admin">Admin</label>
+      <input type="radio" id="admin" name="{{user.uid}}">
+    </fieldset>
+  </li>
 </ol>

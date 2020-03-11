@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthenticationService} from '../shared/services/authentication.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login-page',
@@ -9,9 +10,12 @@ import {AuthenticationService} from '../shared/services/authentication.service';
 export class LoginPageComponent implements OnInit {
   email = '';
   pw = '';
-  constructor(public auth: AuthenticationService) { }
+  constructor(public auth: AuthenticationService, private router: Router) { }
 
   ngOnInit() {
+    if (this.auth.loggedIn === true) {
+      this.router.navigateByUrl('account');
+    }
   }
   login() {
     this.auth.login(this.email, this.pw);

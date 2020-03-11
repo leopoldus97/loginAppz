@@ -14,6 +14,7 @@ import {log} from 'util';
 })
 export class AuthenticationService {
   currentUser: Observable<User>;
+  loggedIn: boolean;
   constructor(private afAuth: AngularFireAuth,
               private afs: AngularFirestore,
               private router: Router) {
@@ -33,6 +34,7 @@ export class AuthenticationService {
     await this.afAuth.auth.signInWithEmailAndPassword(email, pw).then(result => {
       if (result.user.emailVerified) {
         this.router.navigate(['/account']);
+        this.loggedIn = true;
       } else {
         this.signOut();
         this.router.navigate(['/login']);
@@ -44,11 +46,13 @@ export class AuthenticationService {
     const provider = new firebase.auth.GoogleAuthProvider();
     const credential = await this.afAuth.auth.signInWithPopup(provider);
     await this.router.navigate(['/account']);
+    this.loggedIn = true;
     return this.updateUserData(credential.user);
   }
 
   async signOut() {
     await this.afAuth.auth.signOut();
+    this.loggedIn = false;
     return this.router.navigate(['/']);
   }
 
