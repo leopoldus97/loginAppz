@@ -8,6 +8,7 @@ import { LoginPageComponent } from './login-page/login-page.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { NewAccountComponent } from './new-account/new-account.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import {CoreModule} from './shared/helpers/core/core.module';
 import { AdminPageComponent } from './admin/admin-page/admin-page.component';
 import {UsersModule} from './user/user/users.module';
 import {FirebaseModule} from './shared/helpers/firebase/firebase.module';

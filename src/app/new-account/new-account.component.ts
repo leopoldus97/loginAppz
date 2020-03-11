@@ -42,6 +42,7 @@ export class NewAccountComponent implements OnInit {
 
   submit() {
     const user: User = {
+      uid: '',
       email: this.f.email.value,
       displayName: this.f.displayName.value,
       firstName: this.f.firstName.value,

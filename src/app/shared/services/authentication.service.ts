@@ -14,6 +14,7 @@ import {log} from 'util';
 })
 export class AuthenticationService {
   currentUser: Observable<User>;
+  isEmailSignIn: boolean;
   loggedIn: boolean;
   constructor(private afAuth: AngularFireAuth,
               private afs: AngularFirestore,
@@ -33,6 +34,7 @@ export class AuthenticationService {
   async login(email: string, pw: string) {
     await this.afAuth.auth.signInWithEmailAndPassword(email, pw).then(result => {
       if (result.user.emailVerified) {
+        this.isEmailSignIn = true;
         this.router.navigate(['/account']);
         this.loggedIn = true;
       } else {
@@ -52,6 +54,7 @@ export class AuthenticationService {
 
   async signOut() {
     await this.afAuth.auth.signOut();
+    this.isEmailSignIn = false;
     this.loggedIn = false;
     return this.router.navigate(['/']);
   }
@@ -78,6 +81,21 @@ export class AuthenticationService {
     };
 
     return userRef.set(data, { merge: true });
+  }
+
+  public updateUser({ uid, email, firstName, lastName, displayName, role }: User) {
+    const userRef: AngularFirestoreDocument<User> = this.afs.collection<User>('users').doc(uid);
+    const data: User = {
+      uid,
+      email,
+      firstName,
+      lastName,
+      displayName,
+      role
+    };
+    log(uid + ' ' + email);
+
+    return userRef.update(data);
   }
 
   public createUser(user: User, pw: string) {
