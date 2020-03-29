@@ -1,7 +1,0 @@
-{
-  "extends": "./tsconfig-basics.json",
-  "include": [
-    "src",
-    "test"
-  ]
-}
